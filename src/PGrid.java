@@ -19,6 +19,7 @@ public class PGrid {
     // Grid x-axis and y-axis limits
     int xmin, xmax;
     float ymin, ymax;
+    float targetYmin, targetYmax;
 
     // Plots (data)
     List<PPlot> plots;
@@ -43,6 +44,9 @@ public class PGrid {
         this.ymin = ymin;
         this.ymax = ymax;
 
+        this.targetYmin = ymin;
+        this.targetYmax = ymax;
+
         plots = new ArrayList<>();
     }
 
@@ -61,8 +65,33 @@ public class PGrid {
             position = targetPosition.copy();
         }
 
-        // Update y-axis scale
-        // TODO
+        // Update y-axis scale according to max and min y values that are plotted
+        float maxy = 0f;
+        float miny = Float.MAX_VALUE;
+        for (PPlot plot: plots) {
+            maxy = (plot.max(xmin, xmax) > maxy ? plot.max(xmin, xmax) : maxy);
+            miny = (plot.min(xmin, xmax) < miny ? plot.min(xmin, xmax) : miny);
+        }
+        targetYmax = maxy * 1.2f;
+        targetYmin = miny * 0.8f;
+
+        //System.out.printf("%f %f %f\n", miny, targetYmin, ymin);
+
+        // move ymax towards target
+        float distanceYmax = targetYmax - ymax;
+        ymax = ymax + distanceYmax*0.8f;
+        if (distanceYmax < 1) {
+            ymax = targetYmax;
+        }
+
+        // move ymin towards target
+        float distanceYmin = targetYmin - ymin;
+        ymin = ymin + distanceYmin*0.8f;
+        if (distanceYmin < 1) {
+            ymin = targetYmin;
+        }
+
+
     }
 
     public void setYLimits(float ymin, float ymax) {
@@ -83,7 +112,7 @@ public class PGrid {
         this.xLabels = xLabels;
     }
 
-    // Grid to Screen mapping (top left border of grid is 0,0)
+    // Grid coordinates to Screen coordinates mapping (top left border of grid is 0,0)
     public float mapx(float x) {
         return p.map(x, xmin, xmax, 0, gridW);
     }

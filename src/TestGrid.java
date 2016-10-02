@@ -11,11 +11,11 @@ public class TestGrid extends PApplet {
 
 
     public void settings(){
-        size(1000, 700);
+        size(600, 400);
     }
 
     public void setup() {
-        grid = new PGrid(this, new PVector(10,10), 800, 400, 0, 200, 0, 20);
+        grid = new PGrid(this, new PVector(10,10), 500, 300, 0, 200, 0, 20);
         background(0);
         frameRate(30);
 
@@ -42,7 +42,7 @@ public class TestGrid extends PApplet {
         grid.addPlot(plot);
 
         for (int i=0; i<10000; i++) {
-            ydata[i] = sin(i/10.0f) + 15;
+            ydata[i] = 20*sin(i/100.0f);
         }
         plot = new PPlot(this, grid, ydata, color(255, 100, 255), 1);
         grid.addPlot(plot);

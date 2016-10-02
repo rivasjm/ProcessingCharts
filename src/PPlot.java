@@ -38,4 +38,14 @@ public class PPlot {
         }
         return max;
     }
+
+    public float min(int xmin, int xmax) {
+        float min = Float.MAX_VALUE;
+        for (int i=xmin; i<=xmax; i++) {
+            if (y[i] < min) {
+                min = y[i];
+            }
+        }
+        return min;
+    }
 }
