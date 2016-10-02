@@ -27,6 +27,15 @@ public class PPlot {
         for (int i=xmin; i<xmax; i++){
             p.line(g.mapx(i), g.mapy(y[i]), g.mapx(i+1), g.mapy(y[i+1]));
         }
+
+        // Circle at the tail of the line
+        p.fill(this.color);
+        p.ellipse(g.mapx(xmax), g.mapy(y[xmax]), 5f, 5f);
+
+        // Data label
+        p.textAlign(p.LEFT, p.CENTER);
+        p.textSize(10);
+        p.text(String.format("%.1f", y[xmax]), g.mapx(xmax)+5, g.mapy(y[xmax]));
     }
 
     public float max(int xmin, int xmax) {

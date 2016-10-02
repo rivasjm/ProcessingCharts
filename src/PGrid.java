@@ -28,7 +28,7 @@ public class PGrid {
     String[] xLabels;
 
     // X-axis plot limit
-    float plotLimitFactor = 0.8f;
+    float plotTailFactor = 0.8f;
 
 
     public PGrid(PApplet parent, PVector position, float gridW, float gridH,
@@ -68,14 +68,15 @@ public class PGrid {
         // Update y-axis scale according to max and min y values that are plotted
         float maxy = 0f;
         float miny = Float.MAX_VALUE;
+        int tailLimit = (int) ((xmax-xmin)*this.plotTailFactor +xmin);
         for (PPlot plot: plots) {
-            maxy = (plot.max(xmin, xmax) > maxy ? plot.max(xmin, xmax) : maxy);
-            miny = (plot.min(xmin, xmax) < miny ? plot.min(xmin, xmax) : miny);
+            maxy = (plot.max(xmin, tailLimit) > maxy ? plot.max(xmin, tailLimit) : maxy);
+            miny = (plot.min(xmin, tailLimit) < miny ? plot.min(xmin, tailLimit) : miny);
         }
-        targetYmax = maxy * 1.2f;
-        targetYmin = miny * 0.8f;
+        targetYmax = (maxy < 0f) ? maxy * 0.8f : maxy * 1.2f;
+        targetYmin = (miny < 0f) ? miny * 1.2f : miny * 0.8f;
 
-        //System.out.printf("%f %f %f\n", miny, targetYmin, ymin);
+        System.out.printf("%f %f %f\n", miny, targetYmin, ymin);
 
         // move ymax towards target
         float distanceYmax = targetYmax - ymax;
@@ -123,18 +124,18 @@ public class PGrid {
 
 
     public void draw() {
-        p.noFill();
         p.pushMatrix();
         p.translate(position.x, position.y);
 
         // Grid borders
         p.stroke(0);
         p.strokeWeight(2);
+        p.noFill();
         p.rect(0, 0, gridW, gridH);
 
         // Plot lines
         for (PPlot plot: plots) {
-            plot.plot(xmin, (int) ((xmax-xmin)*this.plotLimitFactor+xmin));
+            plot.plot(xmin, (int) ((xmax-xmin)*this.plotTailFactor +xmin));
         }
 
         // Draw x-axis labels and gridlines
