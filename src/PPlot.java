@@ -12,6 +12,9 @@ public class PPlot {
     int color;
     int weight;
 
+    float nullValue = 0f;
+
+
     public PPlot(PApplet parent, PGrid grid, float[] ydata, int color, int weight){
         p = parent;
         g = grid;

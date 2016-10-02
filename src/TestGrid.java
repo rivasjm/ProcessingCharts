@@ -60,7 +60,7 @@ public class TestGrid extends PApplet {
             grid.move(new PVector(mouseX, mouseY));
         }
 
-        //saveFrame("data/line-######.png");
+        //saveFrame("frames/line-######.png");
     }
 
     public static void main(String... args){
