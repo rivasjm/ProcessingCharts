@@ -136,6 +136,10 @@ public class PGrid {
         // Plot lines
         for (PPlot plot: plots) {
             plot.plot(xmin, (int) ((xmax-xmin)*this.plotTailFactor +xmin));
+
+            // TODO: only draw the highest plots, and some plots below ymin
+
+
         }
 
         // Draw x-axis labels and gridlines
